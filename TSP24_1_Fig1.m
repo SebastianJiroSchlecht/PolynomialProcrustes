@@ -25,11 +25,8 @@ s1 = zeros(1, 1024); s1([end,1,2]) = S(1,1,:);
 s2 = zeros(1, 1024); s2([end,1,2]) = S(2,2,:);
 
 % Call the function to plot FFT results
-figure;
-plotFFT(s1, s2, FS);
+plotFFT(s1, s2, 'Fig1.eps');
 
-% Save the figure
-print -depsc Fig1.eps;
 
 % Compute the matrices
 U = zeros(2,2,2);
@@ -59,20 +56,20 @@ error2 = sum(sum(sum(abs(A-Ahat2).^2)))
 %------------------------------------------------------------------------------
 
 figure(2);
-plotSubplot(1, A(1,1,:), Ahat1(1,1,:), '$a_{1,m}[n], \; q_{1,m}[n]$', '', 1, FS);
-plotSubplot(2, A(1,2,:), Ahat1(1,2,:), '', '', 2, FS);
-plotSubplot(3, A(2,1,:), Ahat1(2,1,:), '$a_{2,m}[n], \; q_{2,m}[n]$', 'time index $n$', 1, FS);
-plotSubplot(4, A(2,2,:), Ahat1(2,2,:), '', 'time index $n$', 2, FS);
+plotSubplot(1, A(1,1,:), Ahat1(1,1,:), '$a_{1,m}[n], \; q_{1,m}[n]$', '', 1);
+plotSubplot(2, A(1,2,:), Ahat1(1,2,:), '', '', 2);
+plotSubplot(3, A(2,1,:), Ahat1(2,1,:), '$a_{2,m}[n], \; q_{2,m}[n]$', 'time index $n$', 1);
+plotSubplot(4, A(2,2,:), Ahat1(2,2,:), '', 'time index $n$', 2);
 
 set(gcf, 'OuterPosition', [230 250 300 400]);
 set(gca, 'LooseInset', get(gca, 'TightInset'));
 % print -depsc Fig2a.eps
 
 figure(3);
-plotSubplot(1, A(1,1,:), Ahat2(1,1,:), '$a_{1,m}[n], \; q_{\ast,1,m}[n]$', '', 1, FS);
-plotSubplot(2, A(1,2,:), Ahat2(1,2,:), '', '', 2, FS);
-plotSubplot(3, A(2,1,:), Ahat2(2,1,:), '$a_{2,m}[n], \; q_{\ast,2,m}[n]$', 'time index $n$', 1, FS);
-plotSubplot(4, A(2,2,:), Ahat2(2,2,:), '', 'time index $n$', 2, FS);
+plotSubplot(1, A(1,1,:), Ahat2(1,1,:), '$a_{1,m}[n], \; q_{\ast,1,m}[n]$', '', 1);
+plotSubplot(2, A(1,2,:), Ahat2(1,2,:), '', '', 2);
+plotSubplot(3, A(2,1,:), Ahat2(2,1,:), '$a_{2,m}[n], \; q_{\ast,2,m}[n]$', 'time index $n$', 1);
+plotSubplot(4, A(2,2,:), Ahat2(2,2,:), '', 'time index $n$', 2);
 
 set(gcf, 'OuterPosition', [230 250 300 400]);
 set(gca, 'LooseInset', get(gca, 'TightInset'));
@@ -81,7 +78,9 @@ set(gca, 'LooseInset', get(gca, 'TightInset'));
 
 
 
-function plotFFT(s1, s2, FS)
+function plotFFT(s1, s2, figName)
+    figure;
+    
     % Compute FFT
     freq_axis = (0:1023) / 1024;
     fft_s1 = real(fft(s1, 1024));
@@ -112,11 +111,15 @@ function plotFFT(s1, s2, FS)
     % Adjust figure size and insets
     set(gcf, 'OuterPosition', [230 250 570 250]);
     set(gca, 'LooseInset', get(gca, 'TightInset'));
+
+    % Save figure
+    print('-depsc', figName);
+    
 end
 
 
 
-function plotSubplot(pos, A, Ahat, ylabel_text, xlabel_text, m, FS)
+function plotSubplot(pos, A, Ahat, ylabel_text, xlabel_text, m)
     % This function plots a single subplot with stem and plot
 
     subplot(2,2,pos); % Position in the subplot grid

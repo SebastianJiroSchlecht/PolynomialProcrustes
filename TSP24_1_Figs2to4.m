@@ -17,8 +17,8 @@ S = zeros(2,2,3);
 S(1,1,:) = [0 1 0];
 S(2,2,:) = [.5 .5 .5];
 
-s1 = zeros(1,1024); s1(1:2) = [1 0]; s1(end) = 0;
-s2 = zeros(1,1024); s2(1:2) = [.5 .5]; s2(end) = .5;
+s1 = zeros(1,1024); s1([end 1:2]) = S(1,1,:);
+s2 = zeros(1,1024); s2([end 1:2]) = S(2,2,:);
 U = zeros(2,2,2);
 U(:,:,1) = [1 1; 0 0]/sqrt(2);
 U(:,:,2) = [0 0; 1 -1]/sqrt(2);
@@ -44,7 +44,7 @@ plotFourierApproximation(s1, s2);
 %------------------------------------------------------------------------------
 %  Procrustes attempt
 %------------------------------------------------------------------------------
-figure(2);
+
 Nfft = 2^8;
 IndexN = (-Nfft/2:(Nfft/2-1));
 Vprime = zeros(2,2,Nfft);
@@ -178,6 +178,7 @@ end
 
 
 function plotProcrustes(Anew, Ahat3)
+figure(2);
 
 % Time range and font size adjustment
 t = (-10:15);
