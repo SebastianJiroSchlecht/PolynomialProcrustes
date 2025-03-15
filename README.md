@@ -1,4 +1,4 @@
-# Polynomial Procrustes
+# ![Polynomial Procrustes](Media/Logo_PP.png)
 
 This repository contains the accompanying files for the submission
 

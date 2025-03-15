@@ -2,3 +2,5 @@
 *.eps
 
 *.mat
+
+.DS_Store
