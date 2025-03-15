@@ -1,6 +1,5 @@
-# Polynomial Procrustes 
+# <img src="Media/Logo_PP.png" alt="Logo" width="50" height="50"> Polynomial Procrustes <img src="Media/Logo_PP.png" alt="Logo" width="50" height="50">
 
-![](Media/Logo_PP.png|width=100)
 
 This repository contains the accompanying files for the submission
 
