@@ -9,5 +9,5 @@ Trans. Signal Process., Mar. 2025
 
 The MATLAB code reproduces all figures and values from the paper for best reproducibility.
 
-The code relies on the PEVD Toolbox which can be found here: 
-[http://pevd-toolbox.eee.strath.ac.uk/](http://pevd-toolbox.eee.strath.ac.uk/)
+The code relies on the PEVD Toolbox, which can be found here: 
+[http://pevd-toolbox.eee.strath.ac.uk/](http://pevd-toolbox.eee.strath.ac.uk/). The toolbox is also included as a submodule.
