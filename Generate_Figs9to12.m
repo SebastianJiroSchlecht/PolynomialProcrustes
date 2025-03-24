@@ -1,5 +1,3 @@
-% TSP24_1_Figs9to12.m
-%
 % Generate Figs. 9, 10, 11, and 12 for the paper
 %    S. Weiss, S.J. Schlecht, and M. Moonen: "Best Least Squares Paraunitary 
 %    Approximation of Matrices of Analytic Functions," submitted to IEEE 
@@ -48,14 +46,14 @@ ss(:,Nfft2-1:Nfft2) = s(:,1:2);
 Sf = real(fft(ss, Nfft2, 2));
 Sf = [Sf Sf(:,1)]; % Append first column for wrap-around effect
 
-plotFourierTransform(Sf, 'Fig9.eps');
+plotFourierTransform(Sf, 'Figures/Fig9.eps');
 
 %-----------------------------------------------------------------------------
 %  Figure 10 and 11: polynomial Procrustes solution
 %-----------------------------------------------------------------------------
 
-plotMatrixSubplots(real(A2), real(Qhat), 'Fig10.eps');
-plotMatrixSubplots(imag(A2), imag(Qhat), 'Fig11.eps');
+plotMatrixSubplots(real(A2), real(Qhat), 'Figures/Fig10.eps');
+plotMatrixSubplots(imag(A2), imag(Qhat), 'Figures/Fig11.eps');
  
 %-----------------------------------------------------------------------------
 %  Figure 12: \Pi(z) \Sigma(z)
@@ -83,7 +81,7 @@ Lq = size(QQ,3);
 QQ(:,:,(Lq+1)/2) = QQ(:,:,(Lq+1)/2) - eye(3);
 paraunitarity = PolyMatNorm(QQ);
 
-plotSpectralMagnitude(Nfft2, Sf, SigmaPif, 'Fig12.eps');
+plotSpectralMagnitude(Nfft2, Sf, SigmaPif, 'Figures/Fig12.eps');
 
      
 %-----------------------------------------------------------------------------

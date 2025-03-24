@@ -1,5 +1,3 @@
-% TSP24_1_Fig1.m
-%
 % Generate Fig. 1 for the paper
 %    S. Weiss, S.J. Schlecht, and M. Moonen: "Best Least Squares Paraunitary 
 %    Approximation of Matrices of Analytic Functions," submitted to IEEE 
@@ -25,7 +23,7 @@ s1 = zeros(1, 1024); s1([end,1,2]) = S(1,1,:);
 s2 = zeros(1, 1024); s2([end,1,2]) = S(2,2,:);
 
 % Call the function to plot FFT results
-plotFFT(s1, s2, 'Fig1.eps');
+plotFFT(s1, s2, 'Figures/Fig1.eps');
 
 
 % Compute the matrices

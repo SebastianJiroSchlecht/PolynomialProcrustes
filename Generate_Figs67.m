@@ -1,5 +1,3 @@
-% TSP24_1_Figs67.m
-%
 % Generate Figs. 6 and 7 for the paper
 %    S. Weiss, S.J. Schlecht, and M. Moonen: "Best Least Squares Paraunitary 
 %    Approximation of Matrices of Analytic Functions," submitted to IEEE 
@@ -40,13 +38,13 @@ for i =1:4,
     Angle0 = Angle0 - (W>Wo(i)/2/pi);
 end;
 
-plotPhaseResponse(W, Angle0, Angle2, 'Fig6a.eps');
+plotPhaseResponse(W, Angle0, Angle2, 'Figures/Fig6a.eps');
  
 %------------------------------------------------------------------------------
 %  Figure 6b
 %------------------------------------------------------------------------------
 
-plotFrequencyResponse(W, Sigma, H2, 'Fig6b.eps')
+plotFrequencyResponse(W, Sigma, H2, 'Figures/Fig6b.eps')
 
 
 %------------------------------------------------------------------------------
@@ -59,7 +57,7 @@ for n = 1:size(H2,2),
    Int(n) = (Ssum-sum(H2(:,n)))/Ssum;
 end;
 
-plotMagnitudeResponse(W, Sigma, H2, Wo, 'Fig6c.eps');
+plotMagnitudeResponse(W, Sigma, H2, Wo, 'Figures/Fig6c.eps');
 
 
 
@@ -119,7 +117,7 @@ for n = 1:length(NN),
 end;
 Flimit = sum( (abs(f)-1).^2 )/Nfft;
 
-plotLogErrorScaling(NN, F, Flimit, 'Fig7.eps');  
+plotLogErrorScaling(NN, F, Flimit, 'Figures/Fig7.eps');  
 
   
 

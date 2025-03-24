@@ -1,6 +1,3 @@
-% TSP24_1_Figs2to4.m
-%
-%
 % Generate Figs. 2, 3, and 4 for the paper
 %    S. Weiss, S.J. Schlecht, and M. Moonen: "Best Least Squares Paraunitary 
 %    Approximation of Matrices of Analytic Functions," submitted to IEEE 
@@ -173,7 +170,7 @@ function plotErrorMetrics(PowTwos, ErrorNorm, PUError)
     set(gca, 'LooseInset', get(gca, 'TightInset'));
 
     % Save figure
-    print('-depsc', 'Fig4.eps');
+    print('-depsc', 'Figures/Fig4.eps');
 end
 
 
@@ -204,7 +201,7 @@ set(gcf, 'OuterPosition', [230 250 570 350]);
 set(gca, 'LooseInset', get(gca, 'TightInset'));
 
 % Save figure
-print('-depsc', 'Fig3.eps');
+print('-depsc', 'Figures/Fig3.eps');
 
 end
 
@@ -280,5 +277,5 @@ function plotFourierApproximation(s1, s2)
     set(gca, 'LooseInset', get(gca, 'TightInset'));
 
     % Save figure
-    print('-depsc', 'Fig2.eps');
+    print('-depsc', 'Figures/Fig2.eps');
 end

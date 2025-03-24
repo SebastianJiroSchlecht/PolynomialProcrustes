@@ -1,5 +1,3 @@
-% TSP24_1_Fig8.m
-%
 % Generate Fig. 8 for the paper
 %    S. Weiss, S.J. Schlecht, and M. Moonen: "Best Least Squares Paraunitary 
 %    Approximation of Matrices of Analytic Functions," submitted to IEEE 
@@ -9,11 +7,11 @@ clear all; close all;
 set_figure_style;
 
 % Check for saved data
-if exist('TSP24_1_Fig8.mat', 'file') ~= 2
+if exist('Fig8.mat', 'file') ~= 2
     [Af, Qfb, Qf, f, Seg1, Seg2, Seg3, Nfft] = initializeMatrices();
-    save('TSP24_1_Fig8.mat', 'Af', 'Qfb', 'Qf', 'f', 'Seg1', 'Seg2', 'Seg3', 'Nfft');
+    save('Fig8.mat', 'Af', 'Qfb', 'Qf', 'f', 'Seg1', 'Seg2', 'Seg3', 'Nfft');
 else
-    load('TSP24_1_Fig8.mat');
+    load('Fig8.mat');
 end
 
 % Define parameters
@@ -63,7 +61,7 @@ set(gcf, 'OuterPosition', [230 250 570 350]);
 set(gca, 'LooseInset', get(gca, 'TightInset'));
 
 % Save figure
-print('-depsc', 'Fig8.eps');
+print('-depsc', 'Figures/Fig8.eps');
 
 
 
