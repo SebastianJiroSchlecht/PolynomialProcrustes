@@ -42,7 +42,7 @@ function [Q,D,Sfcorr2,OSflag,Nfft,e] = PUProcrustes(B,A,Nfftmax,Delta,NOrd);
 %                       incorrect for lower DFT lengths --- 20/4/24
 % version 6 --- order of allpass filters as input
 
-QuietMode=true;
+QuietMode=false;
 
 %------------------------------------------------------------------------------
 % parameters and initialisations 
@@ -108,10 +108,11 @@ while crit == 0,
       Sf(:,k) = diag(s);
    end;
    
+   
    %---------------------------------------------------------------------------
    %  determine zero singular values and their corresponding subspaces 
    %---------------------------------------------------------------------------
-   Lk = sum(Sf>EpsSV);          % # of non-zero singular values per bin
+   Lk = sum(Sf>EpsSV,1);        % # of non-zero singular values per bin
    L = max(Lk);                 % # estimated number of non-vanishing singular values
    % we need to address zeros in non-vanishing singular values, either by removing 
    %    that bin (see Sebastian's approach) or by moving the bin (Marc Moonen/Faizan)
@@ -216,6 +217,9 @@ while crit == 0,
             error('number of zero crossings should be even; oversampling flag failed');
          end;  
          if length(ZerosIndex)>1,               % singular value has zero crossings
+            if QuietMode==false,
+                disp(sprintf('   singular value has %d zero crossings ... designing allpass',length(ZerosIndex)));
+            end;    
             Omegas = zeros(length(ZerosIndex),1); 
             for i = 1:length(ZerosIndex),
                % time domain singular values for zero-crossing interpolation
@@ -237,7 +241,8 @@ while crit == 0,
             Delays(m) = AllpassOrd-length(Omegas)/2;            
             At(m,:) = impz(b,a,Nfft).';         % non-causal allpass filter coefficients
          else                                   % singular values has NO zero crossings
-            At(m,1) = 1;
+            if QuietMode==false, disp('   no zero crossings found for singular value'); end;
+            At(m,1) = 1; 
             Delays(m) = 0;
          end; 
          Af(m,:) = fft(circshift(At(m,:),-Delays(m),2),Nfft,2);  
@@ -252,17 +257,17 @@ while crit == 0,
       for k = 1:length(NonZeroBins2),
          Qfcorr2(:,:,k) = Ufcorr2(:,:,k)*diag(D(:,k))*Vfcorr2(:,:,k)';
       end;
-
+   
       %---------------------------------------------------------------------------
       %  time domain Procrustes reconstruction ... Sebastian's trick
       %---------------------------------------------------------------------------
       if length(NonZeroBins)<Nfft,
          Qtcorr2 = PolyMatPartialIDFT(Qfcorr2,Nfft,NonZeroBins2);
       else
-         dummy = ifft(Qfcorr2,Nfft,3); 
-         Qtcorr2 = dummy(:,:,1:Nfft/2); 
-      end;     
-      Qnew = PUPolyMatTrim(Qtcorr2,0);
+         Qtcorr2 = ifft(Qfcorr2,Nfft,3); 
+      end;   
+      LQ = size(Qtcorr2,3);  
+      Qnew = PUPolyMatTrim(Qtcorr2(:,:,[LQ/2+1:LQ,1:LQ/2]),0);        % wrap around to have time zero centred
       %---------------------------------------------------------------------------
       %  check difference to previous iteration
       %---------------------------------------------------------------------------

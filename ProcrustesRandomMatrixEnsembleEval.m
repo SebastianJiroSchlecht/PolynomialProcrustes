@@ -23,12 +23,12 @@ clear all; close all;
 Res = dlmread('EnsembleResults.txt');
 
 % display ensemble statistics
-fprintf('Ensemble paraunitarity error of Procrustes solution:\n');
-fprintf('\t%-25s %1.12f\n', 'Mean:', mean(Res(:,5)));
-fprintf('\t%-25s %1.12f\n\n', 'Standard deviation:', std(Res(:,5)));
+disp('ensemble paraunitarity error of Procrustes solution:');
+disp(sprintf('   mean               %1.12f',mean(Res(:,5))));
+disp(sprintf('   standard deviation %1.12f',std(Res(:,5))));
+disp('normalised least squares mismatch of Procrustes solution:');
+dummy = (Res(:,6)-Res(:,2))./Res(:,2);
+disp(sprintf('   mean               %1.12f',mean(dummy)));
+disp(sprintf('   standard deviation %1.12f',std(dummy)));
 
-dummy = (Res(:,6) - Res(:,2)) ./ Res(:,2);
-fprintf('Normalised least squares mismatch of Procrustes solution:\n');
-fprintf('\t%-25s %1.12f\n', 'Mean:', mean(dummy));
-fprintf('\t%-25s %1.12f\n\n', 'Standard deviation:', std(dummy));
 

@@ -25,9 +25,8 @@ function Results = ProcrustesMetrics(A,Sigma,U,V,Qhat);
 %-----------------------------------------------------------------------------
 % metric --- paraunitarity
 QQ = PolyMatConv(Qhat,ParaHerm(Qhat));
-sizeQ = size(QQ,1);
 Lq = size(QQ,3);
-QQ(:,:,(Lq+1)/2) = QQ(:,:,(Lq+1)/2) - eye(sizeQ);
+QQ(:,:,(Lq+1)/2) = QQ(:,:,(Lq+1)/2) - eye(3);
 paraunitarity = PolyMatNorm(QQ);
 disp(sprintf('paraunitarity error        %0.5g',paraunitarity));
 
