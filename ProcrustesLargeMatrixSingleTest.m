@@ -20,9 +20,9 @@ function Results = ProcrustesLargeMatrixSingleTest(SeedVal,M);
 % Output parameter:
 %       Results              vector containing various metrics
 %
-% [1] S. Weiss, S.J. Schlecht, M. Moonen: "Best Least Squares Paraunitary 
-%     Approximation of Matrices of Analytic Functions", submitted to IEEE
-%     Trans. Signal Process., March 2025.
+% [1] S. Weiss, S.J. Schlecht, M. Moonen: "Best Least Squares Paraunitary
+%     Approximation: Analytic Procrustes Problem," IEEE Trans. Signal
+%     Process., vol. 74, pp. 904-919, 2026, doi: 10.1109/TSP.2026.3663449.
 
 %-------------------------------------------------------------------
 %   parameters

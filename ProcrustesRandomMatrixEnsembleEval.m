@@ -4,8 +4,8 @@
 % in the matrix Res have been imported from the file "EnsembleResults.txt".
 %
 % [1] S. Weiss, S.J. Schlecht, M. Moonen: "Best Least Squares Paraunitary
-%     Approximation of Matrices of Analytic Functions," submitted to IEEE
-%     Trans. Signal Process., Mar. 2025.
+%     Approximation: Analytic Procrustes Problem," IEEE Trans. Signal
+%     Process., vol. 74, pp. 904-919, 2026, doi: 10.1109/TSP.2026.3663449.
 
 clear all; close all;
 

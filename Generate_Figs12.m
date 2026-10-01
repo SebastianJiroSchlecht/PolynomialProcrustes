@@ -1,7 +1,7 @@
 % Generate Figures 1 and 2 for the paper
-%    S. Weiss, S.J. Schlecht, and M. Moonen: "Best Least Squares Paraunitary 
-%    Approximation of Matrices of Analytic Functions," submitted to IEEE 
-%    Trans. Signal Process., submitted Mar. 2025
+%    S. Weiss, S.J. Schlecht, and M. Moonen: "Best Least Squares Paraunitary
+%    Approximation: Analytic Procrustes Problem," IEEE Trans. Signal
+%    Process., vol. 74, pp. 904-919, 2026, doi: 10.1109/TSP.2026.3663449.
 %
 % showcase the purpose of the ultimate Procrustes solution
 
