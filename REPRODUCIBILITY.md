@@ -26,8 +26,12 @@ The second ensemble contains all 700 distinct (seed, dimension) pairs expected b
 
 MAT-file caches in the author's local checkout are ignored by Git. The fresh-checkout workflow exercises the uncached paths. Figures 8 and 11 are explanatory diagrams, not supplied MATLAB plots. Successful script execution by itself does not establish agreement with every curve, theorem, or numerical claim in the paper. The figure windows now derive the zero-lag offset from the solver output length; the physical plotting ranges are retained.
 
+Visual comparison of the recomputed Figures 19–20 with the accepted manuscript still shows different coefficient patterns and amplitudes, even after selecting the published rows 4–6 and columns 29–32. Their execution is now verified, but agreement with the published random realization is not. The original realization, seed/scaling settings, or final figure-generation files need author confirmation; this PR does not infer replacement data from the plot.
+
 The email mentioning `FileList.txt` and three third-party comparison-method folders matches a local polynomial Gram–Schmidt/QR project, not this repository. Those files were not imported into Procrustes. PEVD Toolbox has its own MIT license; redistribution rights for any other third-party implementations must be established from their actual licenses or permission text rather than inferred from permission to use them.
 
 ## Validation
 
 Numerical regressions and all supplied plotting scripts are run by `.github/workflows/reproducibility.yml` in MATLAB R2024b with Signal Processing Toolbox. The workflow retains generated EPS/PNG plots and a reproduction log. Local MATLAB execution required MathWorks sign-in and did not reach script execution. Full ensemble regeneration is excluded from the automated run; workflow results are recorded in the pull request.
+
+The final code run passed on GitHub: [MATLAB workflow 39154534321](https://github.com/SebastianJiroSchlecht/PolynomialProcrustes/actions/runs/39154534321), code commit `bac8304`. All numerical regressions and all ten plotting/evaluation scripts completed from a fresh recursive checkout with no MAT-file caches; 20 EPS files were generated. Rendered plots were visually spot-checked against the manuscript, including Figures 12, 16 and 19–20. The three-channel example returned LS mismatch 1.09395447151, agreeing with the reported 1.0940 to rounding, and PU error 4.73e-23. The full Monte Carlo ensembles were not rerun. Later audit-text and whitespace-only changes do not alter the tested algorithms.
