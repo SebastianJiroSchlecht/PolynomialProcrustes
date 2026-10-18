@@ -15,7 +15,7 @@ SeedVal = 1;
 M = 96;
 L = 1;
 % rows and columns to plot
-Rows=[16 32 55]; Columns = [93 94 95 96];
+Rows=[4 5 6]; Columns = [29 30 31 32];
 
 if (exist('LargeMatrixM96Example.mat')~=2)
   %------------------------------------------------------------------------------

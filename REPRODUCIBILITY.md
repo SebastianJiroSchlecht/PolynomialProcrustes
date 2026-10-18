@@ -11,6 +11,7 @@ Baseline: `c0dcaadfb8635a00d2136c67aa973f71a8f468d9`, with PEVD Toolbox pinned a
 - The large-matrix single test defined allpass order 64 but passed literal 16; it now passes its configured order. The large ensemble harness omitted dimension 96 and only requested five seeds per dimension; it now requests seven dimensions and 100 seeds each.
 - The random ensemble harness requested 1,000 runs rather than the paper's 10,000. It now requests seeds 0–9999. A sixth optional solver argument exposes the convergence tolerance; the random single test uses the paper's 1e-4 threshold, while the solver default remains 1e-8.
 - Recomputations previously appended to the shipped result files. They now write separate `*-recomputed.txt` files. Archived data are preserved, including their historical column ordering.
+- Figures 19–20 selected different matrix entries from the paper. The plotted rows and columns now match the paper (rows 4–6, columns 29–32). Figure 12 now explicitly uses the example's 1e-10 convergence threshold.
 - Figure 3 wrote an unnumbered filename; Figure 20 supplied five tick labels for three tick positions. Both are corrected.
 
 ## Evidence gaps and limits

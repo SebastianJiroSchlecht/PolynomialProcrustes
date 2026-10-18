@@ -6,6 +6,8 @@
 %     Approximation: Analytic Procrustes Problem," IEEE Trans. Signal
 %     Process., vol. 74, pp. 904-919, 2026, doi: 10.1109/TSP.2026.3663449.
 
+assert(exist('EnsembleResults-recomputed.txt','file')~=2,...
+    'Move the existing recomputed results before starting a fresh ensemble.');
 SeedVals = (0:9999);
 for i = 1:length(SeedVals),
    disp(sprintf('Seedvalue: %d',SeedVals(i)));
