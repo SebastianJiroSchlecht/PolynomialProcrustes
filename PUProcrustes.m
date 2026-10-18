@@ -335,6 +335,7 @@ end;
 for i = 1:10,
    Omega = (Omega1+Omega2)/2;
    S12 = real(s*exp(-1i*Omega*nn));
+   if abs(S12)<=1e-12*norm(s), break; end;
    if S12<0;
       Omega1 = Omega;
    else 
