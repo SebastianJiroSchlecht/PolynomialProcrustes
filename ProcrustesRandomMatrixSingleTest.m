@@ -1,8 +1,8 @@
 function Results = ProcrustesRandomMatrixSingleTest(SeedVal);
 % ProcrustesRandomMatrixSingleTest.m
-% 
+%
 % Perform one simulation run within an ensemble of tests using randomised
-% matrices with ground truth Procrustes solution. The randomisation is 
+% matrices with ground truth Procrustes solution. The randomisation is
 % initialised by the seed value SeedVal. The function returns a number of
 % metrics for the simulations in [1] in the variable Results:
 %    Results(1)       seed value
@@ -11,7 +11,7 @@ function Results = ProcrustesRandomMatrixSingleTest(SeedVal);
 %    Results(4)       DFT length
 %    Results(5)       paraunitarity error
 %    Results(6)       LS mismatch
-% 
+%
 % Input parameter:
 %       SeedVal            seed value for random number generator
 %
@@ -30,7 +30,7 @@ N = 64;                        %   order of allpass design
 [A2,Q,U,S,V] = ProcrustesRandomMatrix(M,6,N,SeedVal,'on');
 
 %-------------------------------------------------------------------
-%   calculate minimum least squares error 
+%   calculate minimum least squares error
 %-------------------------------------------------------------------
 LS3 = size(S,3);
 SS = zeros(M,2^14);
@@ -43,16 +43,16 @@ MinLSError = (norm(abs(SSf)-ones(M,2^14),'fro')^2 )/(2^14);
 disp(sprintf('min. least squares mismatch     %0.5g',MinLSError));
 Results = zeros(1,6);
 Results(1) = SeedVal;
-Results(2) = MinLSError;   
+Results(2) = MinLSError;
 
 %-------------------------------------------------------------------
-%   determine polynomial Procrustes solution 
+%   determine polynomial Procrustes solution
 %-------------------------------------------------------------------
 B = zeros(M,M,1); B(:,:,1) = eye(M);
 A = zeros(M,M,size(A2,3)+2*N+1);
-A(:,:,2*N+2:end) = A2;    % delay to enable a  causal solution      
-[Qhat,~,~,~,Results(3),Results(4)] = PUProcrustes(A,B,2^14,0,N);      % Procrustes 
-PMetrics = ProcrustesMetrics(A,S,U,V,Qhat);
+A(:,:,2*N+2:end) = A2;    % delay to enable a  causal solution
+[Qhat,~,~,~,Results(4),Results(3)] = PUProcrustes(A,B,2^14,0,N,1e-4);      % Procrustes
+PMetric = ProcrustesMetrics(A,S,U,V,Qhat);
 disp(sprintf('paraunitarity error             %0.5g',PMetric(1)));
 disp(sprintf('least squares mismatch          %0.5g',PMetric(4)));
 Results(5) = PMetric(1); Results(6) = PMetric(4);

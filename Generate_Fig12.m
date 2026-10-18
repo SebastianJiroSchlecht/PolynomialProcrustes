@@ -41,7 +41,9 @@ N = 16;                                      % this is the order of the allpass 
 A2 = zeros(2,2,size(A3,3)+N+1);
 A2(:,:,N+2:end) = A3;
 B = zeros(2,2,1); B(:,:,1) = eye(2);
-Qhat = PUProcrustes(A2,B,2^12,0,N);  
+Qhat = PUProcrustes(A2,B,2^12,0,N,1e-10);
+% The solver centres zero lag; the example delay makes the retained half causal.
+Qhat = Qhat(:,:,floor(size(Qhat,3)/2)+1:end);
 ProcrustesMetrics(A3,S,U,V,Qhat);  
 
 Nfft = size(Qhat,3);

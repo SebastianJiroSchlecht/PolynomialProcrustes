@@ -78,12 +78,11 @@ for m = 1:M,
           i = i+1;
           Omega(i) = ZeroCrossing(s(m,:),2*pi*(k-2)/Nfft,2*pi*(k-1)/Nfft);
        end;
-       % if there is a zero crossing between the last and the first bin, we have missed it!
-       %     to address this:
-      if sfs(m,1)~=sfs( m,Nfft),
-          i = i+1;
-        Omega(i) =  ZeroCrossing(s(m,:),2*pi*(Nfft-1)/Nfft,2*pi);
-      end; 
+   end;
+   % Include the interval joining the final bin to the first bin once.
+   if sfs(m,1)~=sfs(m,Nfft),
+      i = i+1;
+      Omega(i) = ZeroCrossing(s(m,:),2*pi*(Nfft-1)/Nfft,2*pi);
    end;
    % display if asked
    if strcmp(DispMode,'on')==1,

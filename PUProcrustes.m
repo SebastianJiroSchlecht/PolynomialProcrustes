@@ -1,5 +1,5 @@
-function [Q,D,Sfcorr2,OSflag,Nfft,e] = PUProcrustes(B,A,Nfftmax,Delta,NOrd);
-%[Q,D,S,OSFlag] = PUProcrustes_v5(B,A,Nfft,Delta,N);
+function [Q,D,Sfcorr2,OSflag,Nfft,e] = PUProcrustes(B,A,Nfftmax,Delta,NOrd,EpsPPP);
+%[Q,D,S,OSflag,Nfft,e] = PUProcrustes(B,A,Nfftmax,Delta,NOrd,EpsPPP);
 % 
 %  Q= PUProcrustes(B) finds the closest paraunitary matrix Q to the polynomial
 %  matrix B such that (Q-B) is minimised in the least squares sense. B must be 
@@ -9,9 +9,9 @@ function [Q,D,Sfcorr2,OSflag,Nfft,e] = PUProcrustes(B,A,Nfftmax,Delta,NOrd);
 %  (AQ-B) is minimised in the least squares sense. With A optional, its default 
 %  value is an identity matrix.
 %
-%  Q= PUProcrustes(B,A,Nfft) uses Nfft frequency bins to solve the Procrustes 
-%  problem. If not supplied, Nfft is the next-larger power of two to four times
-%  the support of A'*B.
+%  Q= PUProcrustes(B,A,Nfftmax) caps the iterative DFT refinement at
+%  Nfftmax bins (default 2048). The initial size depends on the support of A'*B.
+%  The first iteration uses at least four times the next power of two of that support.
 %
 %  Q= PUProcrustes(B,A,Nfft,Delta) assumes that the Procrustes problem us non-
 %  causal, and that e.g. a paraunitary approximation of z^Delta A^P(z)B(z) is
@@ -23,13 +23,16 @@ function [Q,D,Sfcorr2,OSflag,Nfft,e] = PUProcrustes(B,A,Nfftmax,Delta,NOrd);
 %      A      NxMxL2 matrix  (optional, default A=eye(M) )
 %      Nfft   number of frequency bins
 %      Delta  advance in case A^P B is non-causal
-%      N      order of allpass filters
+%      N      order of allpass filters (optional, default 32)
+%      EpsPPP convergence threshold (optional, default 1e-8)
 %
 %  Output parameters:
 %      Q      MxMxL3 paraunitary matrix
 %      D      sign changes applied to bins
 %      S      extracted singular values
 %      OSflag (1 if OK, 0 if oversampling by 2 is required)
+%      Nfft   final DFT length
+%      e      squared mismatch to previous iteration
 
 %  S. Weiss and S. Schlecht, 2025
 
@@ -54,8 +57,8 @@ if nargin==1,
    end;
    R = B;
 else
-   [M2,N2,~]=size(A);
-   if M2~=M, error('mismatching dimensions of input matrices'); end;
+   [N2,M2,~]=size(A);
+   if N2~=N || M2~=M, error('mismatching dimensions of input matrices'); end;
    R = PolyMatConv(ParaHerm(A),B);
 end;      
 if nargin<3,
@@ -64,6 +67,12 @@ end;
 if nargin<4,
    Delta = 0;
 end;   
+if nargin<6,
+   EpsPPP = 1e-8;
+end;
+if nargin<5,
+   NOrd = 32;
+end;
 EpsSV = 1e-10;                             % threshold for singular values to be considered zero or close to zero
 AllpassOrd = NOrd;                         % order for allpass filter design
 Nfft = 2^(ceil(log2(size(R,3))+1));        % initial DFT size
@@ -212,7 +221,7 @@ while crit == 0,
       end;      
       for m = 1:size(Sfcorr2,1),                % iterate for singular values
          % find sign changes
-         ZerosIndex = find(abs(diff(D(m,:))));
+         ZerosIndex = find(abs(diff([D(m,:) D(m,1)])));
          if mod(length(ZerosIndex),2)~=0, 
             error('number of zero crossings should be even; oversampling flag failed');
          end;  
@@ -223,15 +232,14 @@ while crit == 0,
             Omegas = zeros(length(ZerosIndex),1); 
             for i = 1:length(ZerosIndex),
                % time domain singular values for zero-crossing interpolation
-               if ZerosIndex(i)==1,                       % catch the case where the zero
-                                                          %    crossing is detected at the 
-                                                          %    first bin            
-                  Omegas(i) = ZeroCrossing(s(m,:),2*pi/Nfft*(NonZeroBins2(ZerosIndex(i))-1),...
-                      2*pi/Nfft*(NonZeroBins2(ZerosIndex(i))) );
+               k = ZerosIndex(i);
+               Omega1 = 2*pi/Nfft*(NonZeroBins2(k)-1);
+               if k == length(NonZeroBins2),
+                  Omega2 = 2*pi/Nfft*(NonZeroBins2(1)-1)+2*pi;
                else
-                  Omegas(i) = ZeroCrossing(s(m,:),2*pi/Nfft*(NonZeroBins2(ZerosIndex(i)-1)),...
-                      2*pi/Nfft*(NonZeroBins2(ZerosIndex(i))) );
-               end;       
+                  Omega2 = 2*pi/Nfft*(NonZeroBins2(k+1)-1);
+               end;
+               Omegas(i) = mod(ZeroCrossing(s(m,:),Omega1,Omega2),2*pi);
             end;
 %            if QuietMode==false, plot(Omegas/2/pi,zeros(size(Omegas)),'ko'); drawnow; end;
             % previous solution based in modulated sections of real allpasses
@@ -261,7 +269,7 @@ while crit == 0,
       %---------------------------------------------------------------------------
       %  time domain Procrustes reconstruction ... Sebastian's trick
       %---------------------------------------------------------------------------
-      if length(NonZeroBins)<Nfft,
+      if length(NonZeroBins2)<Nfft,
          Qtcorr2 = PolyMatPartialIDFT(Qfcorr2,Nfft,NonZeroBins2);
       else
          Qtcorr2 = ifft(Qfcorr2,Nfft,3); 
@@ -276,7 +284,7 @@ while crit == 0,
       if QuietMode==false,
          disp(sprintf('   iteration %d complete; mismatch to previous iteration: %2.12f',[IterNum e]));
       end;   
-      if (e < 1e-8) || (Nfft>=Nfftmax)
+      if (e < EpsPPP) || (Nfft>=Nfftmax)
          crit = 1;
       end;
    else      % OSflag == 0
@@ -327,6 +335,7 @@ end;
 for i = 1:10,
    Omega = (Omega1+Omega2)/2;
    S12 = real(s*exp(-1i*Omega*nn));
+   if abs(S12)<=1e-12*norm(s), break; end;
    if S12<0;
       Omega1 = Omega;
    else 

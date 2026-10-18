@@ -15,7 +15,7 @@ SeedVal = 1;
 M = 96;
 L = 1;
 % rows and columns to plot
-Rows=[16 32 55]; Columns = [93 94 95 96];
+Rows=[4 5 6]; Columns = [29 30 31 32];
 
 if (exist('LargeMatrixM96Example.mat')~=2)
   %------------------------------------------------------------------------------
@@ -57,7 +57,7 @@ if (exist('LargeMatrixM96Example.mat')~=2)
   t = (-5:10);
   AA = zeros(M,M,16);
   AA(:,:,6:10) = A(:,:,1:5)/2;
-  Shift=2048;
+  Shift=floor(size(Q,3)/2);
   QQ = Q(:,:,Shift-4:Shift+11);
   save LargeMatrixM96Example.mat AA QQ
 else
@@ -116,7 +116,7 @@ for m = 1:length(Rows),
       end;
       set(gca,'TickLabelInterpreter','latex',...
       'XTick',(-5:5:10),'XTickLabel',{'$-5$','$0$','$5$','$10$'},...
-      'YTick',(-.1:.1:.1),'YTickLabel',...
+      'YTick',(-.1:.05:.1),'YTickLabel',...
      {'$-.1$','$-.05$','$0$','$0.05$','$0.1$'});
    end;
 end;

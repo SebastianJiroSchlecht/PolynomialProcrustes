@@ -32,7 +32,7 @@ figure(1); clf;
 FS = 12;
 Anew = zeros(2,2,26);
 Anew(:,:,11:14) = A;
-Ahat3 = real(Q(:,:,503:528));
+Ahat3 = real(Q(:,:,floor(size(Q,3)/2)+(-9:16)));
 t = (-10:15); FS= FS-2;
 subplot(221);
 stem(t,squeeze(Anew(1,1,:)),'b'); hold on;

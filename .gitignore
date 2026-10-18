@@ -4,3 +4,7 @@
 *.mat
 
 .DS_Store
+
+audit-*.png
+reproduction-log.txt
+*-recomputed.txt

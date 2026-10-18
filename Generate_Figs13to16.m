@@ -73,7 +73,7 @@ set(gcf,'OuterPosition',[230 250 570 280]);
 set(gca,'LooseInset',get(gca,'TightInset'));
 print -depsc TSP_PPP_Fig13.eps
 
-Qhat = Qhat(:,:,513:end);
+Qhat = Qhat(:,:,floor(size(Qhat,3)/2)+1:end);
 %-----------------------------------------------------------------------------
 %  Figure 14: matrix A(z)
 %-----------------------------------------------------------------------------
@@ -108,15 +108,17 @@ print -depsc TSP_PPP_Fig14.eps
 %-----------------------------------------------------------------------------
 P = PolyMatConv(ParaHerm(U),PolyMatConv(Qhat,V));
 Ls = size(S,3);
-Pi = zeros(1024,3);
+NfftPi = 2^nextpow2(max(Nfft2,size(P,3)));
+Pi = zeros(NfftPi,3);
 % need to account for non-causal allpass
 for i = 1:3,
-   dummy = zeros(1024,1); 
+   dummy = zeros(NfftPi,1);
    dummy(1:size(P,3)) = squeeze(P(i,i,:));
    Pi(:,i) = circshift(dummy,-33);  
 %   Pi(1024-Shift:end,i) = squeeze(P(i,i,1:Shift)); 
 end;
-Pif = fft(Pi,1024,1);
+Pif = fft(Pi,NfftPi,1);
+Pif = Pif(1:NfftPi/Nfft2:end,:);
 Pif = [Pif; Pif(1,:)];
 SigmaPif = real(Pif.*Sf.');
 
@@ -156,7 +158,7 @@ xlabel('normalised anguar frequency $\Omega$','interpreter','latex','fontsize',F
 ylabel('$|\sigma_{m}(\mathrm{e}^{\mathrm{j}\Omega})|$, $\Re\{s_{m,m}(\mathrm{e}^{\mathrm{j}\Omega})\}$',...
 	'interpreter','latex','fontsize',FS);
 legend({'$m=1$','$m=2$','$m=3$'},...
-       'interpreter','latex','fontsize',FS-2,'location','NorthEast');	
+       'interpreter','latex','fontsize',FS-2,'location','NorthEast','AutoUpdate','off');
 Box1 = [.245 .255 0 0.05];
 plot(Box1([1 1 2 2 1]),Box1([3 4 4 3 3]),'k-','linewidth',1);
 axes('position',[.29 .64 0.07 .25]);
