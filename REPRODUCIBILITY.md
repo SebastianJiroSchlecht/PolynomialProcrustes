@@ -11,6 +11,7 @@ Baseline: `c0dcaadfb8635a00d2136c67aa973f71a8f468d9`, with PEVD Toolbox pinned a
 - The large-matrix single test defined allpass order 64 but passed literal 16; it now passes its configured order. The large ensemble harness omitted dimension 96 and only requested five seeds per dimension; it now requests seven dimensions and 100 seeds each.
 - The random ensemble harness requested 1,000 runs rather than the paper's 10,000. It now requests seeds 0–9999. A sixth optional solver argument exposes the convergence tolerance; the random single test uses the paper's 1e-4 threshold, while the solver default remains 1e-8.
 - Recomputations previously appended to the shipped result files. They now write separate `*-recomputed.txt` files. Archived data are preserved, including their historical column ordering.
+- Plotting scripts assumed fixed solver output lengths and offsets, including an older causal Figure 12 cache. Windows now derive zero lag from the returned support instead of hard-coded FFT lengths.
 - Figures 19–20 selected different matrix entries from the paper. The plotted rows and columns now match the paper (rows 4–6, columns 29–32). Figure 12 now explicitly uses the example's 1e-10 convergence threshold.
 - Figure 3 wrote an unnumbered filename; Figure 20 supplied five tick labels for three tick positions. Both are corrected.
 
@@ -20,7 +21,7 @@ The shipped first ensemble contains 1,020 rows, 1,001 unique seeds, and 19 repea
 
 The second ensemble contains all 700 distinct (seed, dimension) pairs expected by the plotting script. Its archived results have not been regenerated during this audit. Historical computation times cannot be reproduced exactly on different hardware.
 
-MAT-file caches in the author's local checkout are ignored by Git. The fresh-checkout workflow exercises the uncached paths. Figures 8 and 11 are explanatory diagrams, not supplied MATLAB plots. Successful script execution by itself does not establish agreement with every curve, theorem, or numerical claim in the paper. In particular, fixed index windows in Figures 12–16 and 19–20 deserve comparison with the paper if solver output lengths change.
+MAT-file caches in the author's local checkout are ignored by Git. The fresh-checkout workflow exercises the uncached paths. Figures 8 and 11 are explanatory diagrams, not supplied MATLAB plots. Successful script execution by itself does not establish agreement with every curve, theorem, or numerical claim in the paper. The figure windows now derive the zero-lag offset from the solver output length; the physical plotting ranges are retained.
 
 The email mentioning `FileList.txt` and three third-party comparison-method folders matches a local polynomial Gram–Schmidt/QR project, not this repository. Those files were not imported into Procrustes. PEVD Toolbox has its own MIT license; redistribution rights for any other third-party implementations must be established from their actual licenses or permission text rather than inferred from permission to use them.
 

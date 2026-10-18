@@ -57,7 +57,7 @@ if (exist('LargeMatrixM96Example.mat')~=2)
   t = (-5:10);
   AA = zeros(M,M,16);
   AA(:,:,6:10) = A(:,:,1:5)/2;
-  Shift=2048;
+  Shift=floor(size(Q,3)/2);
   QQ = Q(:,:,Shift-4:Shift+11);
   save LargeMatrixM96Example.mat AA QQ
 else

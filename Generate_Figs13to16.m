@@ -73,7 +73,7 @@ set(gcf,'OuterPosition',[230 250 570 280]);
 set(gca,'LooseInset',get(gca,'TightInset'));
 print -depsc TSP_PPP_Fig13.eps
 
-Qhat = Qhat(:,:,513:end);
+Qhat = Qhat(:,:,floor(size(Qhat,3)/2)+1:end);
 %-----------------------------------------------------------------------------
 %  Figure 14: matrix A(z)
 %-----------------------------------------------------------------------------

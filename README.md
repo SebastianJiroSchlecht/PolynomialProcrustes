@@ -48,7 +48,7 @@ The checks target MATLAB R2024b with Signal Processing Toolbox (`impz`, `dftmtx`
 | Figures 19–20 | `Generate_Figs1920.m` | Reuses `LargeMatrixM96Example.mat` if present. |
 | First ensemble statistics, Section VI-C | `ProcrustesRandomMatrixEnsembleEval.m` | Reads the archived random-matrix ensemble. |
 
-MAT-file caches are ignored by Git and are not shipped. To test computation rather than reuse a previous result, run in a fresh checkout or move the caches elsewhere first. Plot scripts write EPS files in the working directory. Figures 12–16 and 19–20 include fixed sample-index windows from the original experiments; these must be checked if solver convergence or parameters change.
+MAT-file caches are ignored by Git and are not shipped. To test computation rather than reuse a previous result, run in a fresh checkout or move the caches elsewhere first. Plot scripts write EPS files in the working directory. Plotting windows derive the zero-lag offset from the returned solver support. Changes to the physical delays or allpass order still require checking the plotting ranges.
 
 ## Ensemble limitations
 
