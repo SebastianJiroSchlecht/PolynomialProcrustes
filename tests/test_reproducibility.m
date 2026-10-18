@@ -25,6 +25,13 @@ Qsquare = PUProcrustes(A'*B,eye(2),64,0,32);
 [~,err] = PolyMatAlign(Qrect,Qsquare);
 assert(err<1e-12,'Rectangular normal equations must match square input.');
 
+% Direct row weighting is equivalent to multiplying by a diagonal matrix.
+w = [1; 2; 3]; X = reshape(1:6,3,2)+1i;
+assert(norm(w.*X-diag(w)*X,'fro')<1e-12);
+[b,a] = SingularValueAllpassSwitchCompact([1 3],8,[.2 1 .2]);
+H = fft(b,1024)./fft(a,1024);
+assert(max(abs(abs(H)-1))<1e-10,'Designed filter must remain allpass.');
+
 % Missing bins include repeated singular values, as well as spectral zeros.
 At = zeros(2,2,3);
 At(1,1,:) = [.1 2 .1]; At(2,2,:) = [0 2 0];

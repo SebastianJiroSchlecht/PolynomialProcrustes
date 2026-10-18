@@ -53,8 +53,8 @@ theta = sum(Theta-pi)/2;
 Ar = exp(1i*theta) * exp(-1i*Omega*(N-nn)) - exp(1i*(Phi(:,ones(1,N)) - Omega*nn));
 Ai = -1i*( exp(1i*theta) * exp(-1i*Omega*(N-nn)) + exp(1i*(Phi(:,ones(1,N)) - Omega*nn)) );
 %  weighting analogoues to Matt Lang
-b = diag(w)*(exp(1i*Phi) - exp(1i*(theta-Omega*N)));
-A = diag(w)*[Ar Ai];
+b = w.*(exp(1i*Phi) - exp(1i*(theta-Omega*N)));
+A = w.*[Ar Ai];
 a0 = pinv([ real(A); imag(A) ])* [ real(b); imag(b) ];
 % weighted least squares should work differently --- applied as a regularisation
 
