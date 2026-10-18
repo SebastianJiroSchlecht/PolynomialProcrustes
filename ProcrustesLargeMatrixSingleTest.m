@@ -67,7 +67,7 @@ A = PolyMatConv(U,PolyMatConv(S,ParaHerm(V)));
 B = zeros(M,M,1); 
 B(:,:,1) = eye(M);
 tstart = tic;
-[Q,D,Sfcorr2,OSflag,Nfft,e] = PUProcrustes(A,B,Nfft,0,16);
+[Q,D,Sfcorr2,OSflag,Nfft,e] = PUProcrustes(A,B,Nfft,0,N);
 CompTime = toc(tstart);
 %------------------------------------------------------------------------------
 %  truncate outer zeros of paraunitary matrix

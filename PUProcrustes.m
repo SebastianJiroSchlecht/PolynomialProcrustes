@@ -1,5 +1,5 @@
 function [Q,D,Sfcorr2,OSflag,Nfft,e] = PUProcrustes(B,A,Nfftmax,Delta,NOrd);
-%[Q,D,S,OSFlag] = PUProcrustes_v5(B,A,Nfft,Delta,N);
+%[Q,D,S,OSflag,Nfft,e] = PUProcrustes(B,A,Nfftmax,Delta,NOrd);
 % 
 %  Q= PUProcrustes(B) finds the closest paraunitary matrix Q to the polynomial
 %  matrix B such that (Q-B) is minimised in the least squares sense. B must be 
@@ -9,9 +9,9 @@ function [Q,D,Sfcorr2,OSflag,Nfft,e] = PUProcrustes(B,A,Nfftmax,Delta,NOrd);
 %  (AQ-B) is minimised in the least squares sense. With A optional, its default 
 %  value is an identity matrix.
 %
-%  Q= PUProcrustes(B,A,Nfft) uses Nfft frequency bins to solve the Procrustes 
-%  problem. If not supplied, Nfft is the next-larger power of two to four times
-%  the support of A'*B.
+%  Q= PUProcrustes(B,A,Nfftmax) caps the iterative DFT refinement at
+%  Nfftmax bins (default 2048). The initial size depends on the support of A'*B.
+%  The first iteration uses at least four times the next power of two of that support.
 %
 %  Q= PUProcrustes(B,A,Nfft,Delta) assumes that the Procrustes problem us non-
 %  causal, and that e.g. a paraunitary approximation of z^Delta A^P(z)B(z) is
@@ -23,13 +23,15 @@ function [Q,D,Sfcorr2,OSflag,Nfft,e] = PUProcrustes(B,A,Nfftmax,Delta,NOrd);
 %      A      NxMxL2 matrix  (optional, default A=eye(M) )
 %      Nfft   number of frequency bins
 %      Delta  advance in case A^P B is non-causal
-%      N      order of allpass filters
+%      N      order of allpass filters (optional, default 32)
 %
 %  Output parameters:
 %      Q      MxMxL3 paraunitary matrix
 %      D      sign changes applied to bins
 %      S      extracted singular values
 %      OSflag (1 if OK, 0 if oversampling by 2 is required)
+%      Nfft   final DFT length
+%      e      squared mismatch to previous iteration
 
 %  S. Weiss and S. Schlecht, 2025
 
@@ -54,8 +56,8 @@ if nargin==1,
    end;
    R = B;
 else
-   [M2,N2,~]=size(A);
-   if M2~=M, error('mismatching dimensions of input matrices'); end;
+   [N2,M2,~]=size(A);
+   if N2~=N || M2~=M, error('mismatching dimensions of input matrices'); end;
    R = PolyMatConv(ParaHerm(A),B);
 end;      
 if nargin<3,
@@ -64,6 +66,9 @@ end;
 if nargin<4,
    Delta = 0;
 end;   
+if nargin<5,
+   NOrd = 32;
+end;
 EpsSV = 1e-10;                             % threshold for singular values to be considered zero or close to zero
 AllpassOrd = NOrd;                         % order for allpass filter design
 Nfft = 2^(ceil(log2(size(R,3))+1));        % initial DFT size
@@ -261,7 +266,7 @@ while crit == 0,
       %---------------------------------------------------------------------------
       %  time domain Procrustes reconstruction ... Sebastian's trick
       %---------------------------------------------------------------------------
-      if length(NonZeroBins)<Nfft,
+      if length(NonZeroBins2)<Nfft,
          Qtcorr2 = PolyMatPartialIDFT(Qfcorr2,Nfft,NonZeroBins2);
       else
          Qtcorr2 = ifft(Qfcorr2,Nfft,3); 

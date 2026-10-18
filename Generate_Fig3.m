@@ -35,7 +35,7 @@ legend({'$m=1$','$m=2$'},'interpreter','latex','fontsize',FS-2,...
 xlabel('normalised angular frequency $\Omega$','interpreter','latex','fontsize',FS);
 set(gcf,'OuterPosition',[230 250 570 250]);
 set(gca,'LooseInset',get(gca,'TightInset'));
-print -depsc TSP_PPP_Fig.eps
+print -depsc TSP_PPP_Fig3.eps
 
 
 
