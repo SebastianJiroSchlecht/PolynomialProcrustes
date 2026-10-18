@@ -221,7 +221,7 @@ while crit == 0,
       end;      
       for m = 1:size(Sfcorr2,1),                % iterate for singular values
          % find sign changes
-         ZerosIndex = find(abs(diff(D(m,:))));
+         ZerosIndex = find(abs(diff([D(m,:) D(m,1)])));
          if mod(length(ZerosIndex),2)~=0, 
             error('number of zero crossings should be even; oversampling flag failed');
          end;  
@@ -232,15 +232,14 @@ while crit == 0,
             Omegas = zeros(length(ZerosIndex),1); 
             for i = 1:length(ZerosIndex),
                % time domain singular values for zero-crossing interpolation
-               if ZerosIndex(i)==1,                       % catch the case where the zero
-                                                          %    crossing is detected at the 
-                                                          %    first bin            
-                  Omegas(i) = ZeroCrossing(s(m,:),2*pi/Nfft*(NonZeroBins2(ZerosIndex(i))-1),...
-                      2*pi/Nfft*(NonZeroBins2(ZerosIndex(i))) );
+               k = ZerosIndex(i);
+               Omega1 = 2*pi/Nfft*(NonZeroBins2(k)-1);
+               if k == length(NonZeroBins2),
+                  Omega2 = 2*pi/Nfft*(NonZeroBins2(1)-1)+2*pi;
                else
-                  Omegas(i) = ZeroCrossing(s(m,:),2*pi/Nfft*(NonZeroBins2(ZerosIndex(i)-1)),...
-                      2*pi/Nfft*(NonZeroBins2(ZerosIndex(i))) );
-               end;       
+                  Omega2 = 2*pi/Nfft*(NonZeroBins2(k+1)-1);
+               end;
+               Omegas(i) = mod(ZeroCrossing(s(m,:),Omega1,Omega2),2*pi);
             end;
 %            if QuietMode==false, plot(Omegas/2/pi,zeros(size(Omegas)),'ko'); drawnow; end;
             % previous solution based in modulated sections of real allpasses

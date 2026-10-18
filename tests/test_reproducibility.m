@@ -31,6 +31,13 @@ At(1,1,:) = [.1 2 .1]; At(2,2,:) = [0 2 0];
 [Q,~,~,flag] = PUProcrustes(At,eye(2),64,1,8);
 assert(flag==1 && all(isfinite(Q(:))));
 
+% One crossing lies between the final sampled bin and the first bin.
+phi = pi/2-.01;
+Bedge = zeros(1,1,3);
+Bedge(1,1,:) = [exp(-1i*phi)/2 0 exp(1i*phi)/2];
+[Q,~,~,flag] = PUProcrustes(Bedge,1,64,1,8);
+assert(flag==1 && all(isfinite(Q(:))));
+
 % This used to fail on a misspelled variable after computing the metrics.
 Qloose = PUProcrustes(diag([2 1]),eye(2),64,0,8,1e-4);
 assert(all(isfinite(Qloose(:))));
