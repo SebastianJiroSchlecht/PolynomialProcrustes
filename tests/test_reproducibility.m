@@ -15,7 +15,9 @@ end
 % Defaults and rectangular A/B must agree with explicit normal-equation input.
 B = diag([2 1]);
 Q = PUProcrustes(B);
-assert(PolyMatNorm(PolyMatConv(Q,ParaHerm(Q)))-2 < 1e-10);
+QQ = PolyMatConv(Q,ParaHerm(Q));
+QQ(:,:,(size(QQ,3)+1)/2) = QQ(:,:,(size(QQ,3)+1)/2)-eye(2);
+assert(PolyMatNorm(QQ)<1e-10);
 A = [eye(2); zeros(1,2)];
 B = [diag([2 1]); zeros(1,2)];
 Qrect = PUProcrustes(B,A,64,0,32);
@@ -30,6 +32,8 @@ At(1,1,:) = [.1 2 .1]; At(2,2,:) = [0 2 0];
 assert(flag==1 && all(isfinite(Q(:))));
 
 % This used to fail on a misspelled variable after computing the metrics.
+Qloose = PUProcrustes(diag([2 1]),eye(2),64,0,8,1e-4);
+assert(all(isfinite(Qloose(:))));
 r = ProcrustesRandomMatrixSingleTest(0);
 assert(numel(r)==6 && all(isfinite(r)));
 assert(r(3)>=0 && r(3)<1 && r(4)>=16 && mod(log2(r(4)),1)==0,...

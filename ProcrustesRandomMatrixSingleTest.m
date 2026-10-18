@@ -51,7 +51,7 @@ Results(2) = MinLSError;
 B = zeros(M,M,1); B(:,:,1) = eye(M);
 A = zeros(M,M,size(A2,3)+2*N+1);
 A(:,:,2*N+2:end) = A2;    % delay to enable a  causal solution
-[Qhat,~,~,~,Results(4),Results(3)] = PUProcrustes(A,B,2^14,0,N);      % Procrustes
+[Qhat,~,~,~,Results(4),Results(3)] = PUProcrustes(A,B,2^14,0,N,1e-4);      % Procrustes
 PMetric = ProcrustesMetrics(A,S,U,V,Qhat);
 disp(sprintf('paraunitarity error             %0.5g',PMetric(1)));
 disp(sprintf('least squares mismatch          %0.5g',PMetric(4)));

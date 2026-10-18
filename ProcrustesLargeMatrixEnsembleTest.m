@@ -6,9 +6,8 @@
 %     Approximation: Analytic Procrustes Problem," IEEE Trans. Signal
 %     Process., vol. 74, pp. 904-919, 2026, doi: 10.1109/TSP.2026.3663449.
 
-MVals = [2, 4, 8, 16, 32, 64];
-%MVals = [64];
-SeedVals = (11:15);
+MVals = [2, 4, 8, 16, 32, 64, 96];
+SeedVals = (1:100);
 for m = 1:length(MVals),
   disp(sprintf('Matrix dimension: %d',MVals(m)));
   for i = 1:length(SeedVals),
@@ -18,12 +17,12 @@ for m = 1:length(MVals),
     %--------------------------------------------------------
     %  write results to a file
     %--------------------------------------------------------
-    if exist('LargeMatrixEnsembleResults.txt','file') ~= 2,
+    if exist('LargeMatrixEnsembleResults-recomputed.txt','file') ~= 2,
       disp('new results file created');
-      dlmwrite('LargeMatrixEnsembleResults.txt',[Results(1) Results(2) Results(3) Results(4) Results(5) Results(6) Results(7)]);
+      dlmwrite('LargeMatrixEnsembleResults-recomputed.txt',[Results(1) Results(2) Results(3) Results(4) Results(5) Results(6) Results(7)]);
     else  
       disp('results appended');
-      dlmwrite('LargeMatrixEnsembleResults.txt',[Results(1) Results(2) Results(3) Results(4) Results(5) Results(6) Results(7)],'-append');
+      dlmwrite('LargeMatrixEnsembleResults-recomputed.txt',[Results(1) Results(2) Results(3) Results(4) Results(5) Results(6) Results(7)],'-append');
     end;
   end;  
 end;

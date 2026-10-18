@@ -14,6 +14,11 @@ for k = 1:numel(scripts)
     fprintf('\nRUN %s\n',scripts{k});
     try
         run_one(scripts{k});
+        figures = findall(groot,'Type','figure');
+        for n = 1:numel(figures)
+            print(figures(n),sprintf('audit-%s-%d.png',scripts{k},figures(n).Number),'-dpng','-r100');
+        end
+        close all;
         fprintf('PASS %s\n',scripts{k});
     catch exception
         fprintf('FAIL %s\n%s\n',scripts{k},getReport(exception));
@@ -25,5 +30,4 @@ end
 
 function run_one(scriptName)
 run(scriptName);
-close all;
 end

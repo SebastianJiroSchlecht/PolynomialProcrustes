@@ -1,5 +1,5 @@
-function [Q,D,Sfcorr2,OSflag,Nfft,e] = PUProcrustes(B,A,Nfftmax,Delta,NOrd);
-%[Q,D,S,OSflag,Nfft,e] = PUProcrustes(B,A,Nfftmax,Delta,NOrd);
+function [Q,D,Sfcorr2,OSflag,Nfft,e] = PUProcrustes(B,A,Nfftmax,Delta,NOrd,EpsPPP);
+%[Q,D,S,OSflag,Nfft,e] = PUProcrustes(B,A,Nfftmax,Delta,NOrd,EpsPPP);
 % 
 %  Q= PUProcrustes(B) finds the closest paraunitary matrix Q to the polynomial
 %  matrix B such that (Q-B) is minimised in the least squares sense. B must be 
@@ -24,6 +24,7 @@ function [Q,D,Sfcorr2,OSflag,Nfft,e] = PUProcrustes(B,A,Nfftmax,Delta,NOrd);
 %      Nfft   number of frequency bins
 %      Delta  advance in case A^P B is non-causal
 %      N      order of allpass filters (optional, default 32)
+%      EpsPPP convergence threshold (optional, default 1e-8)
 %
 %  Output parameters:
 %      Q      MxMxL3 paraunitary matrix
@@ -66,6 +67,9 @@ end;
 if nargin<4,
    Delta = 0;
 end;   
+if nargin<6,
+   EpsPPP = 1e-8;
+end;
 if nargin<5,
    NOrd = 32;
 end;
@@ -281,7 +285,7 @@ while crit == 0,
       if QuietMode==false,
          disp(sprintf('   iteration %d complete; mismatch to previous iteration: %2.12f',[IterNum e]));
       end;   
-      if (e < 1e-8) || (Nfft>=Nfftmax)
+      if (e < EpsPPP) || (Nfft>=Nfftmax)
          crit = 1;
       end;
    else      % OSflag == 0
